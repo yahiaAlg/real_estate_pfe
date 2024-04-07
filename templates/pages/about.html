@@ -6,18 +6,13 @@ about
 {% endblock %}
 {% block content %}
 
-        
-    
-
-      
     <section id="showcase-inner" class="py-5 text-white">
       <div class="container">
         <div class="row text-center">  
           <div class="col-md-12">
             <h1 class="display-4"> About HOUSE HARMONY </h1>
             <p class="lead">
-              If the client is very smart, 
-              he will be able to achieve the desired result. They are, beware!
+                Nous sommes un service complet de courtage immobilier dédié à aider les propriétaires à acheter et à vendre des propriétés.
             </p>
           </div>
         </div>
@@ -30,9 +25,9 @@ about
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
             <li class="breadcrumb-item">
-              <a href='{%  url "home"%}'> <i class="fas fa-home"></i> Home</a>
+              <a href='{%  url "home"%}'> <i class="fas fa-home"></i> accueille</a>
             </li>
-            <li class="breadcrumb-item active">About</li>
+            <li class="breadcrumb-item active">à propos</li>
           </ol>
         </nav>
       </div>
@@ -42,15 +37,13 @@ about
       <div class="container">
         <div class="row">
           <div class="col-md-8">
-            <h2>We Search For The Perfect Home</h2>
+            <h2>Nous recherchons la maison parfaite</h2>
             <p class="lead">
-             If the client is very smart,
-              he will be able to achieve the desired result. They are, beware!
+              <b>Harmony real estate</b> a été le nom de confiance en immobilier pour la région d’Anytown. Nous sommes fiers de fournir un service de classe mondiale aux acheteurs et aux vendeurs.
             </p>
             <img src='{% static "assets/img/about.jpg" %}'alt=""/>
             <p class="mt-4">
-              The company itself is a very successful company.
-               Do you think that the responsibilities of denial often take precedence? Isn’t it important to accuse something because it is easy to bear the smallest of great pains? But let him search for the benefits of exercise, so that he can be freed from the trouble of bearing these tasks.
+              Que vous soyez un premier acheteur, que vous vendiez votre maison familiale de longue date ou que vous cherchiez à acquérir une propriété de placement, notre objectif est de vous guider à chaque étape du processus et de rendre le processus aussi fluide et réussi que possible. »
             </p>
 
           </div>
@@ -62,7 +55,7 @@ about
                 alt="Seller of the month"
               />
               <div class="card-body">
-                <h5 class="card-title">Seller Of The Month</h5>
+                <h5 class="card-title">Vendeur du mois</h5>
                 <h6 class="text-secondary">{{agent_de_mois.owner.username}}</h6>
                 <p class="card-text">
                   {{agent_de_mois.biographie}}
@@ -76,10 +69,9 @@ about
 
     <!-- Work -->
     <section id="work" class="bg-dark text-white text-center">
-      <h2 class="display-4">We Work For You</h2>
+      <h2 class="display-4">on travaille pour vous</h2>
       <h4>
-       The company itself is a very successful company. However he wants
-        I will open, from where something and the like!
+          Notre équipe d’agents agréés possède une vaste expérience des marchés de l’immobilier résidentiel et commercial.
       </h4>
       <hr />
       <a href="{% url 'listings' %}" class="btn btn-secondary text-white btn-lg"

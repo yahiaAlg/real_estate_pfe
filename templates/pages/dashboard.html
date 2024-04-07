@@ -1,11 +1,11 @@
-{% extends 'base.html' %} {% block title %} | User Dashboard {% endblock %} 
+{% extends 'base.html' %} {% block title %} | tableau de bord utilisateur {% endblock %} 
 {% block content %}
 <section id="showcase-inner" class="py-5 text-white">
   <div class="container">
     <div class="row text-center">
       <div class="col-md-12">
-        <h1 class="display-4">User Dashboard</h1>
-        <p class="lead">Manage your BT Real Estate account</p>
+        <h1 class="display-4">tableau de bord utilisateur</h1>
+        <p class="lead">Gérer votre compte Harmony Real Estate</p>
       </div>
     </div>
   </div>
@@ -17,9 +17,9 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <a href="{% url 'home' %}"> <i class="fas fa-home"></i> Home</a>
+          <a href="{% url 'home' %}"> <i class="fas fa-home"></i> accueille</a>
         </li>
-        <li class="breadcrumb-item active">Dashboard</li>
+        <li class="breadcrumb-item active">tableau de bord</li>
       </ol>
     </nav>
   </div>
@@ -32,16 +32,16 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <h2>Welcome {{ user.first_name }}</h2>
+        <h2>bienvenue {{ user.first_name }}</h2>
         {% if contacts %}
-        <p>Here are the property listings that you have inquired about</p>
+        <p>Voici les annonces de propriétés que vous avez demandé</p>
         <table class="table">
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">Property</th>
-              <th>subject</th>
-              <th>show</th>
+              <th scope="col">immobilier</th>
+              <th>sujet</th>
+              <th>afficher</th>
             </tr>
           </thead>
           <tbody>
@@ -54,7 +54,7 @@
                 <a
                   class="btn btn-light"
                   href="{% url 'listing' contact.real_state.id %}"
-                  >View Listing</a
+                  >Voir les fiches</a
                 >
               </td>
             </tr>
@@ -62,12 +62,12 @@
           </tbody>
         </table>
         {% else %}
-        <p>You have not made any inquiries</p>
+        <p>Vous n’avez fait aucune enquête</p>
         {% endif %}
 
         <!-- orders -->
         {% if orders %}
-        <p>Here are the property listings that you have ordered about</p>
+        <p>Voici les annonces immobilières que vous avez commandées sur</p>
         <table class="table">
           <thead>
             <tr>
@@ -86,14 +86,14 @@
                 <a
                   class="btn btn-light"
                   href="{% url 'listing' order.listing.id %}"
-                  >View Listing</a
+                  >Voir les fiches</a
                 >
               </td>
               <td>
                 <a
                   class="btn btn-danger"
                   href="{% url 'delete_order' order.id %}"
-                  >delete order</a
+                  >Supprimer la commande</a
                 >
               </td>
             </tr>
@@ -101,7 +101,7 @@
           </tbody>
         </table>
         {% else %}
-        <p>You have not made any orders</p>
+        <p>Vous n’avez passé aucune commande</p>
         {% endif %}
       </div>
     </div>

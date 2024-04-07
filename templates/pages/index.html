@@ -9,10 +9,9 @@
   <div class="container text-center">
     <div class="home-search p-5">
       <div class="overlay p-5">
-        <h1 class="display-4 mb-4">Property Searching Just Got So Easy</h1>
+        <h1 class="display-4 mb-4">La recherche de propriété est devenue si facile</h1>
         <p class="lead">
-          if the client is very smart, they will be able to achieve the desired result. Otherwise, 
-          the toughest or greatest thing will happen at that time! Good idea!
+            Que vous soyez un premier acheteur, que vous cherchiez à agrandir ou à vendre votre maison existante, nos agents sont là pour vous guider à chaque étape
         </p>
         <div class="search">
           <form action='{% url "search" %}'>
@@ -130,7 +129,7 @@
               <p class="text-center"> 
                 {{announcement.description}}
                 <br>  
-                <small> aavailable in {{announcement.launching_date}} </small> 
+                <small> disponible en {{announcement.launching_date}} </small> 
               </p>
             </div>        
           </div>
@@ -158,8 +157,8 @@
           {% empty %}
         
           {% endfor %}
-          <h2>Welcome {{user.username}}</h2>
-    <h3 class="text-center mb-3">Latest Listings</h3>
+          <h2>bienvenue {{user.username}}</h2>
+    <h3 class="text-center mb-3">Derniers listes</h3>
     <div class="row">
 
         {% for listing in first_three %}
@@ -218,28 +217,27 @@
       <div class="col-md-4">
         <i class="fas fa-comment fa-4x mr-4"></i>
         <hr />
-        <h3>Consulting Services</h3>
+        <h3>services de consultation</h3>
         <p>
-         Our real estate consultants offer a comprehensive range of services, including market analysis, financial advisory, investment strategies,
-           and development consulting to guide you through all your real estate projects
+          Nos conseillers immobiliers offrent une gamme complète de services, y compris l’analyse de marché, le conseil financier, les stratégies d’investissement,Conseil et développement pour vous guider dans tous vos projets immobiliers
         </p>
       </div>
       <div class="col-md-4">
         <i class="fas fa-home fa-4x mr-4"></i>
         <hr />
-        <h3>Propery Management</h3>
+        <h3>gestion immobilière</h3>
         <p>
-Let our dedicated property management team alleviate the burdens of property ownership. We efficiently handle all aspects of managing your investment property, from tenant screening to routine inspections, maintenance, rent collection, and financial reporting. With 24/7 emergency tenant support,
- we ensure peace of mind for both landlords and tenants.
+          Laissez notre équipe de gestion immobilière dédiée alléger le fardeau de la propriété. Nous gérons efficacement tous les aspects de la gestion de votre immeuble de placement, du contrôle des locataires aux inspections de routine, à l’entretien, à la perception des loyers et aux rapports financiers. Avec le soutien des locataires d’urgence 24/7,
+          nous assurons la tranquillité d’esprit des propriétaires et des locataires.
         </p>
       </div>
       <div class="col-md-4">
         <i class="fas fa-suitcase fa-4x mr-4"></i>
         <hr />
-        <h3>Renting & Selling</h3>
+        <h3>Location et vente</h3>
         <p>
-         Whether you're renting or selling, we simplify the process for you. With a vast inventory of rental listings and thorough tenant services, finding your next home is effortless. For sellers, we provide professional marketing, market analysis, and expert negotiation, ensuring a smooth and successful transaction. 
-         Trust us to handle the details while you focus on your property goals
+          Que vous soyez locataire ou vendeur, nous simplifions le processus pour vous. Avec un vaste inventaire d’annonces de location et des services complets aux locataires, trouver votre prochaine maison est facile. Pour les vendeurs, nous fournissons un marketing professionnel, une analyse de marché et une négociation experte, assurant une transaction fluide et réussie. 
+          Faites-nous confiance pour gérer les détails pendant que vous vous concentrez sur vos objectifs immobiliers
         </p>
       </div>
     </div>

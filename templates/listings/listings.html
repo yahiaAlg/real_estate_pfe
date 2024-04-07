@@ -9,8 +9,8 @@
   <div class="container">
     <div class="row text-center">
       <div class="col-md-12">
-        <h1 class="display-4">Browse Our Properties</h1>
-        <p class="lead">If the customer is very smart, he or she will be able to achieve the desired result. They are, beware!</p>
+        <h1 class="display-4">Parcourez nos propriétés</h1>
+        <p class="lead">Harmony Real Estate a été la source de confiance pour les services immobiliers résidentiels et commerciaux dans la région</p>
       </div>
     </div>
   </div>
@@ -24,7 +24,7 @@
           <a href="{% url 'home' %}">
             <i class="fas fa-home"></i> Home</a>
         </li>
-        <li class="breadcrumb-item active"> Browse Listings</li>
+        <li class="breadcrumb-item active"> Parcourez nos propriétés</li>
       </ol>
     </nav>
   </div>
@@ -59,9 +59,9 @@
             </div>
             <div class="row py-2 text-secondary">
               <div class="col-6">
-                <i class="fas fa-bed"></i> Bedrooms: {{listing.bedrooms}}</div>
+                <i class="fas fa-bed"></i> chambres: {{listing.bedrooms}}</div>
               <div class="col-6">
-                <i class="fas fa-bath"></i> Bathrooms: {{listing.bathrooms}}</div>
+                <i class="fas fa-bath"></i> salles de bain: {{listing.bathrooms}}</div>
             </div>
             <hr>
             <div class="row py-2 text-secondary">
@@ -73,12 +73,12 @@
                 <i class="fas fa-clock"></i> {{listing.add_date|timesince}}</div>
             </div>
             <hr>
-            <a href="{% url 'listing' listing.id %}" class="btn btn-primary btn-block">More Info</a>
+            <a href="{% url 'listing' listing.id %}" class="btn btn-primary btn-block">plus d'infos</a>
           </div>
         </div>
       </div>
       {% empty %}
-        <h2>no listing available</h2>
+        <h2>aucune immobilier disponible</h2>
       {% endfor %}
 {% if listings.has_other_pages %}
             <ul class="pagination">
