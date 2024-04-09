@@ -66,7 +66,7 @@ def search(request):
             search_listings = search_listings.filter(
                 price__lte=price
             )
-        
+        pprint(search_listings)
         context = {
             "listings":search_listings
         }
