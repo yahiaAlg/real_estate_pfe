@@ -54,7 +54,7 @@ def contact(request):
                     f"inquiry about {title} by {customer.owner.username}",
                     f"{message}",
                     request.user.email,
-                    ["vastedelmi@gufum.com"],
+                    [listing.realtor.owner.email], # type: ignore
                     fail_silently=False
                 ) # type: ignore
             except Exception as e:
