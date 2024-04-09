@@ -4,36 +4,35 @@ from accounts import*
 from .models import *
 from listings.models import *
 from django.contrib   import messages
+from django.core.mail import send_mail
 # Create your views here.
 
 import smtplib
 
 
-def send_email(subject, message, receiver_address="yawapen977@acentni.com"):
-    # Your email address and password
-    sender_address = "meriemmeriem19alg@gmail.com"
-    sender_password = "hvds gcfj srsq bmib"
+# def send_email(subject, message, receiver_address="yawapen977@acentni.com"):
+#     # Your email address and password
+#     sender_address = "meriemmeriem19alg@gmail.com"
+#     sender_password = "hvds gcfj srsq bmib"
 
 
+#     # Set up the subject and body of the email
+#     header = f"\r\nSubject: {subject}"
+#     body = f"\r\n{message}"
 
-    # Set up the subject and body of the email
-    header = f"\r\nSubject: {subject}"
-    body = f"\r\n{message}"
+#     # Combine the headers and the body
+#     combined = header + body
 
-    # Combine the headers and the body
-    combined = header + body
-
-    # Send the email!
-    server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
-    server.login(sender_address, sender_password)
-    server.sendmail(sender_address, receiver_address, combined)
-    print("Email sent!")
+#     # Send the email!
+#     server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
+#     server.login(sender_address, sender_password)
+#     server.sendmail(sender_address, receiver_address, combined)
+#     print("Email sent!")
 
 
 def contact(request):
     if request.method=="POST":
         listingid=request.POST.get('listing_id',"")
-
 
         name=request.POST.get('name',"")
         title=request.POST.get('title',"")
@@ -49,11 +48,17 @@ def contact(request):
             )
             print("the new contact",contact)
             contact.save()
-            send_email(
-                f"inquiry about {title} by {customer.owner.username}",
-                f"{message}",
-                "yawapen977@acentni.com",
-            )
+
+            try:
+                send_mail(
+                    f"inquiry about {title} by {customer.owner.username}",
+                    f"{message}",
+                    request.user.email,
+                    ["vastedelmi@gufum.com"],
+                    fail_silently=False
+                ) # type: ignore
+            except Exception as e:
+                print("ERROR: ",e)
             pprint(contact)
             messages.success(request,"contact saved successfuly")
             return redirect("dashboard")
