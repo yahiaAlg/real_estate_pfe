@@ -65,14 +65,16 @@ def contact(request):
 def order(request):
     if request.method == "POST":
         listing_id = request.POST["listing_id"]
+        transaction_type = request.POST["transaction_type"]
+        print("transaction_type: ", transaction_type)
         listing = Listing.objects.get(id=listing_id)
         #  Check if user has made inquiry already
         if request.user.is_authenticated:
 
-            has_contacted = Order.objects.all().filter(
+            has_ordered = Order.objects.all().filter(
                 listing_id=listing_id, customer=request.user
             )
-            if has_contacted:
+            if has_ordered:
                 messages.error(
                     request, "You have already made an inquiry for this listing"
                 )
@@ -80,7 +82,10 @@ def order(request):
 
             else:
                 new_order = Order(
-                    listing=listing, customer=request.user, email=request.user.email
+                    listing=listing,
+                    customer=request.user,
+                    email=request.user.email,
+                    transaction_type=transaction_type,
                 )
                 new_order.save()
                 messages.success(request, "Order saved successfully!")

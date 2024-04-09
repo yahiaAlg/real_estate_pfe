@@ -1,5 +1,6 @@
-{% extends 'base.html' %} {% load humanize %} {% block title %} | {{
-listing.title }} {% endblock %} {% block content %}
+{% extends 'base.html' %} {% load humanize %} 
+{% block title %} immobilier | {{listing.title }} {% endblock %} 
+{% block content %}
 <section id="showcase-inner" class="py-5 text-white">
   <div class="container">
     <div class="row text-center">
@@ -19,10 +20,10 @@ listing.title }} {% endblock %} {% block content %}
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <a href="{% url 'home' %}">Home</a>
+          <a href="{% url 'home' %}">accueille</a>
         </li>
         <li class="breadcrumb-item">
-          <a href="{% url 'listings' %}">Listings</a>
+          <a href="{% url 'listings' %}">liste des immobilier</a>
         </li>
         <li class="breadcrumb-item active">{{ listing.title }}</li>
       </ol>
@@ -34,7 +35,7 @@ listing.title }} {% endblock %} {% block content %}
 <section id="listing" class="py-4">
   <div class="container">
     <a href="{% url 'listings' %}" class="btn btn-light mb-4"
-      >Back To Listings</a
+      >revenir ver toutes les immobilier</a
     >
     <div class="row">
       <div class="col-md-9">
@@ -209,7 +210,8 @@ listing.title }} {% endblock %} {% block content %}
     </div>
   </div>
 </section>
-
+{% if user.is_authenticated %}
+  
 <!-- Inquiry Modal -->
 <div class="modal fade" id="inquiryModal" role="dialog">
   <div class="modal-dialog">
@@ -346,6 +348,14 @@ listing.title }} {% endblock %} {% block content %}
               required
             />
           </div>
+          <div class="col mb-3 ">
+            <label for="transaction_type">type de transaction:</label>
+            <select name="transaction_type" id="transaction_type" class="form-control">
+            <option value="allouer">allouer</option>
+            <option value="vendre">vendre</option>
+          </div>
+
+          </select>
           <div class="form-group">
             <label for="email" class="col-form-label">Email:</label>
             <input
@@ -366,7 +376,7 @@ listing.title }} {% endblock %} {% block content %}
           <hr />
           <input
             type="submit"
-            value="Send"
+            value="envoyer"
             class="btn btn-block btn-secondary"
           />
         </form>
@@ -374,5 +384,7 @@ listing.title }} {% endblock %} {% block content %}
     </div>
   </div>
 </div>
+  
+{% endif %}
 
 {% endblock %}

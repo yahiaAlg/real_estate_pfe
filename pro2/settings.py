@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-xt(tw)(0u%8^jzp*18$zotqd@p8t9_pqyug0)#o!nkvdmvh-tc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [ "real-estate-pfe.onrender.com"]
+ALLOWED_HOSTS = ["127.0.0.1", "real-estate-pfe.onrender.com"]
 
 
 # Application definition
@@ -137,3 +137,11 @@ MEDIA_ROOT=os.path.join(BASE_DIR,"media")
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = "meriemmeriem19alg@gmail.com"
+EMAIL_HOST_PASSWORD = "kdza nxxy ywus oyyc"
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
