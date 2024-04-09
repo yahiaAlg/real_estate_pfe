@@ -33,7 +33,7 @@ def search(request):
         price = request.POST.get("price","")
         city = request.POST.get("city","")
         state = request.POST.get("state","")
-        bedrooms = request.POST.get("keywords","")
+        bedrooms = request.POST.get("bedrooms","")
         #first level [published lists]
         search_listings = Listing.objects.filter(is_published=True)
         
