@@ -194,6 +194,7 @@
         </div>
         <button
           class="btn-primary btn-block btn-lg"
+          id="btn-contact-{{listing.id}}"
           data-toggle="modal"
           data-target="#inquiryModal"
         >
@@ -384,7 +385,35 @@
     </div>
   </div>
 </div>
-  
+{% else %}
+<div class="modal fade " id="inquiryModal2" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content bg-light">
+      <div class="modal-header">
+
+        <h5 class="modal-title text-dark" id="inquiryModalLabel">n'est pas connecter dans le site</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade " id="inquiryModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content bg-light">
+      <div class="modal-header">
+
+        <h5 class="modal-title text-dark" id="inquiryModalLabel">n'est pas connecter dans le site</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 {% endif %}
 
 {% endblock %}

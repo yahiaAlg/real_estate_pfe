@@ -1,4 +1,5 @@
 {% extends 'base.html' %} {% block title %} | tableau de bord utilisateur {% endblock %} 
+{% load humanize %}
 {% block content %}
 <section id="showcase-inner" class="py-5 text-white">
   <div class="container">
@@ -34,7 +35,7 @@
       <div class="col-md-12">
         <h2>bienvenue {{ user.first_name }}</h2>
         {% if contacts %}
-        <p>Voici les annonces de propriétés que vous avez demandé</p>
+        <p>Voici les annonces de propriétés que vous avez consulté</p>
         <table class="table">
           <thead>
             <tr>
@@ -42,13 +43,14 @@
               <th scope="col">immobilier</th>
               <th>sujet</th>
               <th>afficher</th>
+              <th>voir plus</th>
             </tr>
           </thead>
           <tbody>
             {% for contact in contacts %}
             <tr>
               <td>{{ contact.id }}</td>
-              <td>{{ contact.listing }}</td>
+              <td>{{ contact.real_state }}</td>
               <td>{{ contact.title }}</td>
               <td>
                 <a
@@ -56,6 +58,50 @@
                   href="{% url 'listing' contact.real_state.id %}"
                   >Voir les fiches</a
                 >
+              </td>
+              <td>
+                <button
+                  class="btn btn-primary"
+                  data-toggle="modal"
+                  data-target="#more-info{{contact.id}}"
+                >
+                  afficher plus
+                </button>
+                <!--more info modal-->
+                <div class="modal fade" id="more-info{{contact.id}}" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="inquiryModalLabel">{{contact.real_state}}</h5>
+                      
+                        <button type="button" class="close" data-dismiss="modal">
+                          <span>&times;</span>
+                        </button>
+
+                      </div>
+                      <div class="modal-body p-3">
+                        <h3 class='text-info'> {{contact.title}} </h3>
+                        <small>
+                          <b>envoyer depuis</b>: <i class='muted'>{{contact.consultation_date|timesince}}</i>
+                        </small>                        
+                        <p class='lead muted'> {{contact.content}} </p>
+
+                        <small>
+                          <b>review status</b>:<br> {% if contact.is_reviewed %}<i>a été examiné dans le {{contact.last_answer}}{% else %} n'est pas examiné</i>{% endif %}
+                        </small>
+                        {% if contact.reponse_status %}
+                          <p class='lead border border-2 p-3'> {{contact.response_content}} </p>
+                        {% endif %}
+                        <a
+                          class="btn btn-light d-block mt-3"
+                          href="{% url 'listing' contact.real_state.id %}#btn-contact-{{contact.real_state.id}}"
+                        >
+                        messager pour plus d'info
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </td>
             </tr>
             {% endfor %}
@@ -72,7 +118,10 @@
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">Property</th>
+              <th scope="col">immobilier</th>
+              <th scope="col">type de transaction</th>
+              <th scope="col">type de contrat</th>
+              {% if order.status == "payee"  %}<th scope="col">date de payement</th>{% else %}<th scope="col">dernier date de payement</th>{% endif %}
               <th>view</th>
               <th>delete</th>
             </tr>
@@ -82,6 +131,9 @@
             <tr>
               <td>{{ order.id }}</td>
               <td>{{ order.listing }}</td>
+              <td>{{ order.transaction_type }}</td>
+              <td>{{ order.status }}</td>
+              {% if order.status == "payee"  %}<td>{{order.purchase_date}}</td>{% else %}<td>{{order.rent_or_installement_payement_date}}</td>{% endif %}
               <td>
                 <a
                   class="btn btn-light"
@@ -107,4 +159,6 @@
     </div>
   </div>
 </section>
+
+
 {% endblock %}
