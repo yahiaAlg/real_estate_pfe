@@ -34,43 +34,69 @@ def search(request):
         city = request.POST.get("city","")
         state = request.POST.get("state","")
         bedrooms = request.POST.get("bedrooms","")
-        #first level [published lists]
+        # first level [published lists]
         search_listings = Listing.objects.filter(is_published=True)
-        
+        pprint(search_listings)
+        print("searched parmaeters are:")
+        pprint(request.POST)
 
-        #second level [lists that contain keywords]
         if keywords:
-            search_listings = search_listings.filter( description__icontains=keywords)
-        #second level [lists that contain keywords]
-        if keywords:
-            search_listings = search_listings.filter(
+            new_search_listings = search_listings.filter(
                 title__icontains=keywords
+            ) 
+            search_listings = new_search_listings if new_search_listings.exists() else search_listings
+            print("#third level [lists that contain keywords]")
+            print(search_listings)
+        # second level [lists that contain keywords]
+
+        if keywords:
+            new_search_listings = search_listings.filter(description__icontains=keywords)
+            # second level [lists that contain keywords]
+            search_listings = (
+                new_search_listings if new_search_listings.exists() else search_listings
             )
-        #third level [lists that contain city]
+
+            print("#second level [lists that contain keywords]")
+            print(search_listings)
+        # third level [lists that contain city]
         if city:
-            search_listings = search_listings.filter(
+            new_search_listings = search_listings.filter(
                 city__icontains=city
             )
+            search_listings = new_search_listings if new_search_listings.exists() else search_listings
 
-        #second level [lists that contain state]
+        # second level [lists that contain state]
         if state:
-            search_listings = search_listings.filter(
+            new_search_listings = search_listings.filter(
                 state__icontains=state
             )
-        #second level [lists that contain state]
+            search_listings = (
+                new_search_listings if new_search_listings.exists() else search_listings
+            )
+
+        # second level [lists that contain state]
         if bedrooms:
-            search_listings = search_listings.filter(
+            new_search_listings = search_listings.filter(
                 bedrooms=bedrooms
             )
+            search_listings = (
+                new_search_listings if new_search_listings.exists() else search_listings
+            )
         if price:
-            search_listings = search_listings.filter(
+            new_search_listings = search_listings.filter(
                 price__lte=price
             )
+            search_listings = (
+                new_search_listings if new_search_listings.exists() else search_listings
+            )
+
         pprint(search_listings)
         context = {
             "listings":search_listings
         }
         return render(request, 'pages/search.html', context)
+
+
 def register(request):
     if request.method == "POST":
         username=request.POST.get("username","")

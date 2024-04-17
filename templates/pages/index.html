@@ -14,7 +14,7 @@
             Que vous soyez un premier acheteur, que vous cherchiez à agrandir ou à vendre votre maison existante, nos agents sont là pour vous guider à chaque étape
         </p>
         <div class="search">
-          <form action='{% url "search" %}'>
+          <form action='{% url "search" %}' method='post'>
            {% csrf_token  %}
             <!-- Form Row 1 -->
             <div class="form-row">
