@@ -34,9 +34,10 @@ def search(request):
         city = request.POST.get("city","")
         state = request.POST.get("state","")
         bedrooms = request.POST.get("bedrooms","")
+
         # first level [published lists]
         search_listings = Listing.objects.filter(is_published=True)
-        pprint(search_listings)
+
         print("searched parmaeters are:")
         pprint(request.POST)
 
@@ -45,19 +46,14 @@ def search(request):
                 title__icontains=keywords
             ) 
             search_listings = new_search_listings if new_search_listings.exists() else search_listings
-            print("#third level [lists that contain keywords]")
-            print(search_listings)
         # second level [lists that contain keywords]
 
         if keywords:
             new_search_listings = search_listings.filter(description__icontains=keywords)
-            # second level [lists that contain keywords]
+
             search_listings = (
                 new_search_listings if new_search_listings.exists() else search_listings
             )
-
-            print("#second level [lists that contain keywords]")
-            print(search_listings)
         # third level [lists that contain city]
         if city:
             new_search_listings = search_listings.filter(
@@ -65,7 +61,7 @@ def search(request):
             )
             search_listings = new_search_listings if new_search_listings.exists() else search_listings
 
-        # second level [lists that contain state]
+        # fourth level [lists that contain state]
         if state:
             new_search_listings = search_listings.filter(
                 state__icontains=state
@@ -74,7 +70,7 @@ def search(request):
                 new_search_listings if new_search_listings.exists() else search_listings
             )
 
-        # second level [lists that contain state]
+        # fifth level [lists that contain bedrooms]
         if bedrooms:
             new_search_listings = search_listings.filter(
                 bedrooms=bedrooms
@@ -82,6 +78,8 @@ def search(request):
             search_listings = (
                 new_search_listings if new_search_listings.exists() else search_listings
             )
+
+        # sixth level [lists that contain price]
         if price:
             new_search_listings = search_listings.filter(
                 price__lte=price
