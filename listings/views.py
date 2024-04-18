@@ -21,4 +21,4 @@ def listing(request,listing_id):
         "listing":listing,
     
     }
-    return render(request,'listings/listing.html', context)
+    return render(request,'listings/listing.html', context)#Cette ligne de code renvoie une réponse HTTP qui rend un template HTML appelé 'listings/listing.html
