@@ -57,7 +57,7 @@ def contact(request):
                     [listing.realtor.owner.email], # type: ignore
                     fail_silently=False
                 ) # type: ignore
-            except Exception as e:
+            except Exception as e:#erreur lors de l'envoie d'un email
                 print("ERROR: ",e)
             pprint(contact)
             messages.success(request,"contact saved successfuly")
