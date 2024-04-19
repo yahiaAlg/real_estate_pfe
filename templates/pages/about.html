@@ -75,14 +75,14 @@ about
       </h4>
       <hr />
       <a href="{% url 'listings' %}" class="btn btn-secondary text-white btn-lg"
-        >View Our Featured Listings</a
+        >afficher les fiches des immobiliers</a
       >
     </section>
 
     <!-- Team -->
     <section id="team" class="py-5">
       <div class="container">
-        <h2 class="text-center">Our Team</h2>
+        <h2 class="text-center">notre equipe</h2>
         <div class="row text-center">
           {% for agent in agents %}
             <div class="col-md-4">
@@ -91,13 +91,13 @@ about
               alt=""
               class="rounded-circle mb-3"
             />
-            <h4>{{agent.name}}</h4>
+            <h4>{{agent.owner.username}}</h4>
             <p class="text-success">
-              <i class="fas fa-award text-success mb-3"></i> Realtor
+              <i class="fas fa-award text-success mb-3"></i> Agent d'immobilier
             </p>
             <hr />
             <p><i class="fas fa-phone"></i> {{agent.phone}}</p>
-            <p><i class="fas fa-envelope-open"></i> {{agent.email}}</p>
+            <p><i class="fas fa-envelope-open"></i> {{agent.owner.email}}</p>
           </div>
 
           {% empty %}

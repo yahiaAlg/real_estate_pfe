@@ -131,16 +131,20 @@ def login(request):
         username = request.POST.get("username", "")
         password = request.POST.get("password", "")
         user_authentificated = auth.authenticate(username=username, password=password)
-        print('usernamer_is',user_authentificated)
-        if user_authentificated:
-            auth.login(request, user_authentificated) 
-            return redirect("home")
+        print('username is: ',user_authentificated)
+        if User.objects.filter(username=username).exists():
+            if user_authentificated:
+                auth.login(request, user_authentificated) 
+                return redirect("home")
+            else:
+                messages.error(request, "password or username are not correct!")
+                return redirect("login")
         else:
-            messages.error(request, "inforamtion not correct")
-            return redirect("login")
+            messages.error(request, f"no such a user with the name {username} in the database!")
     return render(request, 'pages/login.html')
 
-
+from django.contrib.auth.decorators import login_required
+@login_required(login_url="login")
 def dashboard(request):
     customer=CustomerProfile.objects.get(owner=request.user)
     user_contacts = Contact.objects.order_by("-consultation_date").filter(

@@ -29,14 +29,25 @@
 <!-- Alerts -->
 {% include 'partials/_alerts.html' %}
 
-<section id="dashboard" class="py-4">
+<section id="dashboard" class="py-2">
   <div class="container">
+
+    <div class="row mb-3">
+      <div class="col-6 px-2">
+        <a href='{% url "edit_account" %}' class='btn btn-info w-100'>modifier votre compte personnelle</a>
+      </div>
+      <div class="col-6 px-2">
+        <a href='{% url "edit_profile" %}' class='btn btn-info w-100'>modifier votre profile</a>
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-md-12">
         <h2>bienvenue {{ user.first_name }}</h2>
         {% if contacts %}
         <p>Voici les annonces de propriétés que vous avez consulté</p>
-        <table class="table">
+        <div class="table-responsive">
+          <table class="table" >
           <thead>
             <tr>
               <th scope="col">#</th>
@@ -107,6 +118,7 @@
             {% endfor %}
           </tbody>
         </table>
+        </div>
         {% else %}
         <p>Vous n’avez fait aucune enquête</p>
         {% endif %}
@@ -114,7 +126,8 @@
         <!-- orders -->
         {% if orders %}
         <p>Voici les annonces immobilières que vous avez commandées sur</p>
-        <table class="table">
+        <div class="table-responsive">
+          <table class="table" >
           <thead>
             <tr>
               <th scope="col">#</th>
@@ -152,6 +165,7 @@
             {% endfor %}
           </tbody>
         </table>
+        </div>
         {% else %}
         <p>Vous n’avez passé aucune commande</p>
         {% endif %}
