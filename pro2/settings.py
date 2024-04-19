@@ -146,3 +146,8 @@ EMAIL_USE_SSL = True
 EMAIL_HOST_USER = "meriemmeriem19alg@gmail.com"
 EMAIL_HOST_PASSWORD = "kdza nxxy ywus oyyc"
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+from django.contrib import messages
+MESSAGE_TAGS ={
+    messages.ERROR :"danger"
+}

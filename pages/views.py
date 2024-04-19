@@ -100,7 +100,7 @@ def register(request):
         username=request.POST.get("username","")
         first_name=request.POST.get("first_name","")
         last_name=request.POST.get("last_name","")
-        password1=request.POST.get("password1","")
+        password1=request.POST.get("password","")
         password2=request.POST.get("password2","")
         email=request.POST.get("email","")
         if User.objects.filter(username=username).exists():
@@ -117,8 +117,17 @@ def register(request):
                         password=password1,
                     )
                     new_user.save()
-                    messages.success
-                       
+                    messages.success(request, "user created successfully")
+                    return redirect('dashboard')
+                # WHERE IS THE ELSE OF THIS IF ALSO🥲🥲🥲
+                else:
+                    messages.error(request, "password didn't match")
+                    return redirect('register')
+            # WHERE IS THE ELSE OF THIS IF
+            else:
+                messages.error(request, "one of the fields is empty")
+                return redirect('register')
+
     return render(request, 'pages/registre.html')
 def logout(request):
      if request.method == "GET":
