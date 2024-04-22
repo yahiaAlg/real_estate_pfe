@@ -23,7 +23,7 @@ def edit_profile(request):
     context = {
         "profile_form": profile_form,
     }
-    return render(request, "accounts/edit-profile.html", context)
+    return render(request, "accounts/edit-profile.html", context)#Cette ligne rend le template HTML edit-profile.html avec les données spécifiées dans le dictionnaire context
 
 
 def edit_account(request):
