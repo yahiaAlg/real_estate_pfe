@@ -169,52 +169,58 @@ search
 <section id="listings" class="py-4">
   <div class="container">
     <div class="row">
-           {% for listing in listings %}
-              <!-- Listing  -->
-      <div class="col-md-6 col-lg-4 mb-4">
-        <div class="card listing-preview">
-          <img class="card-img-top" src="{{listing.main_image.url}}" alt="">
-          <div class="card-img-overlay">
-            <h2>
-              <span class="badge badge-secondary text-white">{{listing.title}}</span>
-            </h2>
+        {% for listing in listings %}
+          <!-- Listing i -->
+          <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card listing-preview">
+            <img class="card-img-top" src='{{listing.main_image.url}}' alt="">
+              <div class="card-img-overlay">
+                <h2>
+                  <span class="badge badge-secondary text-white">prix: {{listing.price}}</span>
+                </h2>
+              </div>
+              <div class="card-body">
+                <div class="listing-heading text-center">
+                  <h4 class="text-primary">{{listing.title}}</h4>
+                  <p>
+                    <i class="fas fa-map-marker text-secondary"></i> addresse : {{listing.city}}</p>
+                </div>
+                <hr>
+                <div class="row py-2 text-secondary">
+                  <div class="col-6">
+                    <i class="fas fa-th-large"></i> surface : {{listing.area}}</div>
+                  <div class="col-6">
+                    <i class="fas fa-car"></i> garage: {{listing.garages}}</div>
+                </div>
+                <div class="row py-2 text-secondary">
+                  <div class="col-6">
+                    <i class="fas fa-bed"></i> chambres: {{listing.bedroooms}}</div>
+                  <div class="col-6">
+                    <i class="fas fa-bath"></i> salles des bains: {{listing.bathrooms}}</div>
+                </div>
+                <hr>
+                <div class="row py-2 text-secondary">
+                  <div class="col-12">
+                      <i class="fas fa-user"></i> agent: {{listing.realtor}}
+                  </div>
+                </div>
+                <div class="row py-2 text-secondary">
+                  <div class="col-7">
+                    <i class="fas fa-tablet"></i> transaction: {{listing.transaction_type}}
+                  </div>
+                </div>
+                <div class="row text-secondary pb-2">
+                  <div class="col-12">
+                    <i class="fas fa-clock"></i> publipostage depuis: {{listing.add_date|timesince}}</div>
+                </div>
+                <hr>
+                <a href='{% url "listing" listing.id %}'class="btn btn-primary btn-block">pplus d'Info</a>
+              </div>
+            </div>
           </div>
-          <div class="card-body">
-            <div class="listing-heading text-center">
-              <h4 class="text-primary">{{listing.price|intcomma}}</h4>
-              <p>
-                <i class="fas fa-map-marker text-secondary">{{listing.city}}</i></p>
-            </div>
-            <hr>
-            <div class="row py-2 text-secondary">
-              <div class="col-6">
-                <i class="fas fa-th-large"></i> Sqft: {{listing.area}}</div>
-              <div class="col-6">
-                <i class="fas fa-car"></i> Garage: {{listing.garages}}</div>
-            </div>
-            <div class="row py-2 text-secondary">
-              <div class="col-6">
-                <i class="fas fa-bed"></i> chambres: {{listing.bedrooms}}</div>
-              <div class="col-6">
-                <i class="fas fa-bath"></i> Bathrooms: {{listing.bathrooms}}</div>
-            </div>
-            <hr>
-            <div class="row py-2 text-secondary">
-              <div class="col-12">
-                <i class="fas fa-user"></i> {{listing.realtor.owner.username}}</div>
-            </div>
-            <div class="row text-secondary pb-2">
-              <div class="col-6">
-                <i class="fas fa-clock"></i> {{listing.add_date|timesince}}</div>
-            </div>
-            <hr>
-            <a href="{% url 'listing' listing.id %}" class="btn btn-primary btn-block">More Info</a>
-          </div>
-        </div>
-      </div>
-      {% empty %}
-        <h2>no listing available</h2>
-      {% endfor %}
+        {% empty %}
+          aucun immobilier
+        {% endfor %}
   </div>
 </section>
 {% endblock %}

@@ -43,16 +43,14 @@ def search(request):
 
         print("searched parmaeters are:")
         pprint(request.POST)
-
+        q_objects = Q()
         if keywords:
-            new_search_listings = search_listings.filter(
-                title__icontains=keywords
-            ) 
-            search_listings = new_search_listings if new_search_listings.exists() else search_listings
-        # second level [lists that contain keywords]
 
-        if keywords:
-            new_search_listings = search_listings.filter(description__icontains=keywords)
+            for field in ["title", "description", "realtor__owner__username"]:
+                q_objects |= Q(**{f"{field}__icontains": keywords})
+                new_search_listings = search_listings.filter(q_objects).distinct()
+            print("# first level [lists that contain keywords]")
+            print(new_search_listings)
 
 
         # third level [lists that contain city]
@@ -60,7 +58,6 @@ def search(request):
             new_search_listings = search_listings.filter(
                 city__icontains=city
             )
-            search_listings = new_search_listings if new_search_listings.exists() else search_listings
 
         # fourth level [lists that contain state]
         if state:
@@ -68,13 +65,11 @@ def search(request):
                 state__icontains=state
             )
 
-
         # fifth level [lists that contain bedrooms]
         if bedrooms:
             new_search_listings = search_listings.filter(
-                bedrooms=bedrooms
+                bedrooms__lte=bedrooms
             )
-
 
         # sixth level [lists that contain price]
         if price:
@@ -89,9 +84,9 @@ def search(request):
             )
 
         print("final filter result is:")
-        pprint(search_listings)
+        pprint(new_search_listings)
         context = {
-            "listings":search_listings
+            "listings":new_search_listings
         }
         return render(request, 'pages/search.html', context)
 
