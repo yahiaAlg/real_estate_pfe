@@ -10,24 +10,23 @@ from django.core.mail import send_mail
 import smtplib
 
 
-# def send_email(subject, message, receiver_address="yawapen977@acentni.com"):
-#     # Your email address and password
-#     sender_address = "meriemmeriem19alg@gmail.com"
-#     sender_password = "hvds gcfj srsq bmib"
+def send_email(subject, message, receiver_address="yawapen977@acentni.com"):
+    # Your email address and password
+    sender_address = "meriemmeriem19alg@gmail.com"
+    sender_password = "kdza nxxy ywus oyyc"
 
+    # Set up the subject and body of the email
+    header = f"\r\nSubject: {subject}"
+    body = f"\r\n{message}"
 
-#     # Set up the subject and body of the email
-#     header = f"\r\nSubject: {subject}"
-#     body = f"\r\n{message}"
+    # Combine the headers and the body
+    combined = header + body
 
-#     # Combine the headers and the body
-#     combined = header + body
-
-#     # Send the email!
-#     server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
-#     server.login(sender_address, sender_password)
-#     server.sendmail(sender_address, receiver_address, combined)
-#     print("Email sent!")
+    # Send the email!
+    server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
+    server.login(sender_address, sender_password)
+    server.sendmail(sender_address, receiver_address, combined)
+    print("Email sent!")
 
 
 def contact(request):
@@ -36,6 +35,7 @@ def contact(request):
 
         name=request.POST.get('name',"")
         title=request.POST.get('title',"")
+        email=request.POST.get('email',"")
         message=request.POST.get('message',"")
         if listingid and name and title and message:
             customer=CustomerProfile.objects.get(owner=request.user)
@@ -50,13 +50,18 @@ def contact(request):
             contact.save()
 
             try:
-                send_mail(
-                    f"inquiry about {title} by {customer.owner.username}",
+                send_email(
+                    f"inquiry about {title} by {customer.owner.username} sent by {request.user.email}",
                     f"{message}",
-                    request.user.email,
-                    [listing.realtor.owner.email], # type: ignore
-                    fail_silently=False
+                    email # type: ignore
                 ) # type: ignore
+                # send_mail(
+                #     f"inquiry about {title} by {customer.owner.username}",
+                #     f"{message}",
+                #     request.user.email,
+                #     [listing.realtor.owner.email], # type: ignore
+                #     fail_silently=False
+                # ) # type: ignore
             except Exception as e:#erreur lors de l'envoie d'un email
                 print("ERROR: ",e)
             pprint(contact)
