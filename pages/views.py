@@ -96,7 +96,7 @@ def search(request):
 
 
 def register(request):
-    if request.method == "POST":
+    if request.method =="POST":
         username=request.POST.get("username","")
         first_name=request.POST.get("first_name","")
         last_name=request.POST.get("last_name","")
@@ -117,18 +117,18 @@ def register(request):
                         password=password1,
                     )
                     new_user.save()
-                    messages.success(request, "user created successfully")
+                    messages.success(request,"user created successfully")
                     return redirect('dashboard')
                 # WHERE IS THE ELSE OF THIS IF ALSO🥲🥲🥲
                 else:
-                    messages.error(request, "password didn't match")
+                    messages.error(request,"password didn't match")
                     return redirect('register')
             # WHERE IS THE ELSE OF THIS IF
             else:
-                messages.error(request, "one of the fields is empty")
+                messages.error(request,"one of the fields is empty")
                 return redirect('register')
 
-    return render(request, 'pages/registre.html')
+    return render(request,'pages/registre.html')
 def logout(request):
      if request.method == "GET":
         auth.logout(request)
