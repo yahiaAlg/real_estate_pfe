@@ -135,7 +135,7 @@ def login(request):
         pprint("user info:")
         pprint(request.POST)
         user_authenticated = User.objects.filter(username=given_username).first()
-        print("user password is: ", user_authenticated.password) # type: ignore
+        # print("user password is: ", user_authenticated.password) # type: ignore
 
         if user_authenticated:
             user_authenticated = auth.authenticate(request, username=given_username, password=given_password)
