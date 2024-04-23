@@ -25,6 +25,8 @@ def about(request):
             
     }
     return render(request, 'pages/about.html',context)
+
+from django.db.models import Q
 def search(request):
     if request.method == "GET":
         return render(request, 'pages/search.html')
@@ -35,7 +37,7 @@ def search(request):
         state = request.POST.get("state","")
         bedrooms = request.POST.get("bedrooms","")
         transaction_type = request.POST.get("transaction_type", "")
-
+        print("transaction type selected is: ", transaction_type)
         # first level [published lists]
         search_listings = Listing.objects.filter(is_published=True)
 
@@ -52,9 +54,7 @@ def search(request):
         if keywords:
             new_search_listings = search_listings.filter(description__icontains=keywords)
 
-            search_listings = (
-                new_search_listings if new_search_listings.exists() else search_listings
-            )
+
         # third level [lists that contain city]
         if city:
             new_search_listings = search_listings.filter(
@@ -67,53 +67,56 @@ def search(request):
             new_search_listings = search_listings.filter(
                 state__icontains=state
             )
-            search_listings = (
-                new_search_listings if new_search_listings.exists() else search_listings
-            )
+
 
         # fifth level [lists that contain bedrooms]
         if bedrooms:
             new_search_listings = search_listings.filter(
                 bedrooms=bedrooms
             )
-            search_listings = (
-                new_search_listings if new_search_listings.exists() else search_listings
-            )
+
 
         # sixth level [lists that contain price]
         if price:
             new_search_listings = search_listings.filter(
                 price__lte=price
             )
-            search_listings = (
-                new_search_listings if new_search_listings.exists() else search_listings
-            )
-        if price:
-            new_search_listings = search_listings.filter(transaction_type__iexact=transaction_type)
-            search_listings = (
-                new_search_listings if new_search_listings.exists() else search_listings
+
+        if transaction_type:
+            new_search_listings = search_listings.filter(transaction_type=transaction_type)
+            pprint(
+                new_search_listings
             )
 
+        print("final filter result is:")
         pprint(search_listings)
         context = {
             "listings":search_listings
         }
         return render(request, 'pages/search.html', context)
 
-from django.contrib.auth.forms import UserCreationForm 
+from accounts.forms import NewUserForm ,Group
 def register(request):
-    user_form = UserCreationForm()
+    user_form = NewUserForm()
 
     if request.method == "POST":
-        user_form = UserCreationForm(request.POST)
+        user_form = NewUserForm(request.POST)
 
         if user_form.is_valid():
-            user_form.save()
+            print("info validation processing...")
+            new_user = User.objects.create_user(
+                username=user_form.cleaned_data["username"],
+                password=user_form.cleaned_data["password1"],
+            )
+            user_grp = Group.objects.get(name=user_form.cleaned_data["group"])
+            new_user.groups.add(user_grp)
+            new_user.save()
+            print("account created successfully!")
             pprint(user_form.cleaned_data)
-            messages.success(request, "changed submitted successfully")
+            messages.success(request, "account created successfully!")
             return redirect("dashboard")
         else:
-            pprint("error: ", user_form.errors) # type: ignore
+            print("error: ", user_form.errors) # type: ignore
             return redirect("register")
 
     context = {
