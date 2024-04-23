@@ -34,6 +34,7 @@ def search(request):
         city = request.POST.get("city","")
         state = request.POST.get("state","")
         bedrooms = request.POST.get("bedrooms","")
+        transaction_type = request.POST.get("transaction_type", "")
 
         # first level [published lists]
         search_listings = Listing.objects.filter(is_published=True)
@@ -87,6 +88,11 @@ def search(request):
             search_listings = (
                 new_search_listings if new_search_listings.exists() else search_listings
             )
+        if price:
+            new_search_listings = search_listings.filter(transaction_type__iexact=transaction_type)
+            search_listings = (
+                new_search_listings if new_search_listings.exists() else search_listings
+            )
 
         pprint(search_listings)
         context = {
@@ -94,68 +100,68 @@ def search(request):
         }
         return render(request, 'pages/search.html', context)
 
-
+from django.contrib.auth.forms import UserCreationForm 
 def register(request):
-    if request.method =="POST":
-        username=request.POST.get("username","")
-        first_name=request.POST.get("first_name","")
-        last_name=request.POST.get("last_name","")
-        password1=request.POST.get("password","")
-        password2=request.POST.get("password2","")
-        email=request.POST.get("email","")
-        if User.objects.filter(username=username).exists():
-            messages.error(request,"This username is already taken.")
-            redirect('register')
-        else:
-            if email and last_name and first_name: 
-                if password1==password2:
-                    new_user=User(
-                        first_name=first_name,
-                        last_name=last_name,
-                        username=username,
-                        email=email,
-                        password=password1,
-                    )
-                    new_user.save()
-                    messages.success(request,"user created successfully")
-                    return redirect('dashboard')
-                # WHERE IS THE ELSE OF THIS IF ALSO🥲🥲🥲
-                else:
-                    messages.error(request,"password didn't match")
-                    return redirect('register')
-            # WHERE IS THE ELSE OF THIS IF
-            else:
-                messages.error(request,"one of the fields is empty")
-                return redirect('register')
+    user_form = UserCreationForm()
 
-    return render(request,'pages/registre.html')
+    if request.method == "POST":
+        user_form = UserCreationForm(request.POST)
+
+        if user_form.is_valid():
+            user_form.save()
+            pprint(user_form.cleaned_data)
+            messages.success(request, "changed submitted successfully")
+            return redirect("dashboard")
+        else:
+            pprint("error: ", user_form.errors) # type: ignore
+            return redirect("register")
+
+    context = {
+        "user_form": user_form,
+    }
+    return render(request, "pages/register.html", context)
+
+
 def logout(request):
-     if request.method == "GET":
+    if request.method == "GET":
         auth.logout(request)
         messages.success(request,"logged out")
         return redirect("home")
-     return render(request, 'pages/index.html')
+    return render(request, 'pages/index.html')
+
+
 def login(request):
-    if request.method=='POST':
-        username = request.POST.get("username", "")
-        password = request.POST.get("password", "")
-        user_authentificated = auth.authenticate(username=username, password=password)
-        print('username is: ',user_authentificated)
-        if User.objects.filter(username=username).exists():
-            if user_authentificated:
-                auth.login(request, user_authentificated) 
+    if request.method == "POST":
+        given_username = request.POST.get("username", "")
+        given_password = request.POST.get("password", "")
+        pprint("user info:")
+        pprint(request.POST)
+        user_authentificated = User.objects.filter(username=given_username).first()
+        # print("user password is: ", user_authentificated.password) # type: ignore
+
+        if user_authentificated:
+            if user_authentificated.password == given_password:
+                auth.login(request, user_authentificated)
+                messages.success(request, "logged in successfully")
                 return redirect("home")
             else:
                 messages.error(request, "password or username are not correct!")
                 return redirect("login")
         else:
-            messages.error(request, f"no such a user with the name {username} in the database!")
-    return render(request, 'pages/login.html')
+            messages.error(
+                request, f"no such a user with the name {given_username} in the database!"
+            )
+    return render(request, "pages/login.html")
+
 
 from django.contrib.auth.decorators import login_required
 @login_required(login_url="login")
 def dashboard(request):
-    customer=CustomerProfile.objects.get(owner=request.user)
+    customer=CustomerProfile.objects.filter(owner=request.user).exists()
+    if not customer:
+        messages.error(request, "Your account needs to be validated by admin first!")
+        return redirect("home")
+    customer = CustomerProfile.objects.get(owner=request.user)
     user_contacts = Contact.objects.order_by("-consultation_date").filter(
         customer=customer
     )

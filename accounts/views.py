@@ -17,7 +17,7 @@ def edit_profile(request):
             messages.success(request, "changed submitted successfully")
             return redirect("dashboard")
         else:
-            pprint("error: ", profile_form.errors)
+            pprint("error: ", profile_form.errors) # type: ignore
             return redirect("edit_profile")
 
     context = {
@@ -39,7 +39,7 @@ def edit_account(request):
             messages.success(request, "changed submitted successfully")
             return redirect("dashboard")
         else:
-            pprint("error: ",user_form.errors)
+            pprint("error: ",user_form.errors) # type: ignore
             return redirect("edit_account")
 
     context = {

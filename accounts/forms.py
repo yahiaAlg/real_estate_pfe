@@ -9,7 +9,7 @@ class UserForm(UserChangeForm):
         super().__init__(*args, **kwargs)
         del self.fields["user_permissions"]
         del self.fields["is_superuser"]
-        del self.fields["groups"]
+        # del self.fields["groups"]
         del self.fields["is_staff"]
         del self.fields["is_active"]
         del self.fields["date_joined"]
