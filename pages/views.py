@@ -136,12 +136,13 @@ def login(request):
         given_password = request.POST.get("password", "")
         pprint("user info:")
         pprint(request.POST)
-        user_authentificated = User.objects.filter(username=given_username).first()
-        # print("user password is: ", user_authentificated.password) # type: ignore
+        user_authenticated = User.objects.filter(username=given_username).first()
+        print("user password is: ", user_authenticated.password) # type: ignore
 
-        if user_authentificated:
-            if user_authentificated.password == given_password:
-                auth.login(request, user_authentificated)
+        if user_authenticated:
+            user_authenticated = auth.authenticate(request, username=given_username, password=given_password)
+            if user_authenticated:
+                auth.login(request, user_authenticated)
                 messages.success(request, "logged in successfully")
                 return redirect("home")
             else:
