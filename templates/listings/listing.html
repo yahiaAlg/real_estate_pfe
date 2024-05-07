@@ -1,4 +1,6 @@
-{% extends 'base.html' %} {% load humanize %} 
+{% extends 'base.html' %} 
+{% load humanize %} 
+{% load django_bootstrap5 %} 
 {% block title %} immobilier | {{listing.title }} {% endblock %} 
 {% block content %}
 <section id="showcase-inner" class="py-5 text-white">
@@ -211,6 +213,69 @@
     </div>
   </div>
 </section>
+<!--Comment section-->
+<section id="comment-section" class="container px-3 pb-4">
+  <hr>
+  {% include 'partials/_alerts.html' %}
+  <h1 class="text-center">Comment Section</h1>
+  {% with comments.count as total_comments %}
+      <h2 class='headline-alert text-dark'>{{total_comments}} comment{{total_comments|pluralize}} </h2>
+  {% endwith %}
+  {% for comment in comments %}
+  <div class="card my-2 w-75">
+      <div class="card-header bg-transparent">
+          <h4 class='headline-alert text-secondary text-small '>
+              comment {{forloop.counter}}  of {{comments.count}}
+          </h4>
+          <strong>{{ comment.user.username }}</strong>&nbsp;
+          commented&nbsp;
+          {{ comment.updated_at | timesince  }} ago
+      </div>
+      <div class="card-body">
+          <blockquote class="blockquote card-blockquote">
+              <p>&quot;{{ comment.content }}&quot;</p>
+              <footer class="blockquote-footer">Email:
+                  <cite title="Source Title">
+                      {{ comment.user.email }}
+                  </cite>
+              </footer>
+          </blockquote>
+      </div>
+  </div>
+  {% empty %}
+      <p class="text-secondary lead">
+          no comments to be shown
+      </p> 
+  {% endfor %}
+  {% if user.is_authenticated %}
+    <form action="{% url "listing" listing.id %}" method="post">
+        {% csrf_token %}
+        {% bootstrap_form comment_form %}
+
+        <div class="row">
+            <div class="col">{% bootstrap_button button_type="reset" content="clear" %}</div>
+            <div class="col">{% bootstrap_button button_type="submit" content="submit" %}</div>
+        </div>
+    </form>
+
+    <script>
+        document.querySelectorAll(".btn").forEach(function (btn) {
+            btn.classList.add("w-100");
+            if (btn.type=="reset") {
+                btn.classList.remove("btn-primary")
+                btn.classList.add("btn-danger")
+            }
+        })
+        document.querySelectorAll("select").forEach(function (select) {
+            select.classList.add("d-block");
+            select.classList.add("form-control");
+
+        })
+    </script>  
+  {% endif %}
+
+</section>
+
 {% if user.is_authenticated %}
   
 <!-- Inquiry Modal -->
@@ -385,6 +450,7 @@
     </div>
   </div>
 </div>
+
 {% else %}
 <div class="modal fade " id="inquiryModal2" role="dialog">
   <div class="modal-dialog">

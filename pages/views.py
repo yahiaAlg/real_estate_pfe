@@ -6,6 +6,9 @@ from contact.models import Contact, Order
 from listings.models import *
 from django.contrib import messages
 from django.contrib import auth
+from .models import Feedback
+from .forms import FeedbackForm
+from contact.views import send_email
 # Create your views here.
 def index(request):
     first_three=Listing.objects.order_by("-add_date")[:3]
@@ -17,12 +20,41 @@ def index(request):
     }
     return render(request, 'pages/index.html',context)
 def about(request):
+    feedbacks = Feedback.objects.filter(
+        is_published=True
+    )
     agent_de_mois=RealtorProfile.objects.get(is_seller_of_month=True)
     agents=RealtorProfile.objects.all()
-    context={
-        "agent_de_mois":agent_de_mois,
-        "agents":agents
-            
+    feedback_form = FeedbackForm()
+    if request.method == "POST":
+        print("request.POST is:")
+        pprint(request.POST)
+        feedback_form = FeedbackForm(request.POST)
+        if feedback_form.is_valid() and not Feedback.objects.filter(writer=request.user).exists():
+            feedback = feedback_form.save(commit=False)
+            feedback.writer = request.user
+            feedback.save()
+            # send email to admin
+            send_email(
+                subject="New feedback",
+        message=f"{request.user.username} with email {request.user.email if request.user.email else "[no email was set yet]"} has submitted a feedback",
+                receiver_address=settings.EMAIL_HOST_USER
+            )
+            messages.success(request, "feedback saved successfully")
+            return redirect("about")
+        elif Feedback.objects.filter(writer=request.user).exists():
+            messages.warning(
+                request,
+                "you have already submitted a feedback, you can't submit another one!"
+            )
+            return redirect("about")
+        else:
+            messages.error(request, "feedback not saved!")
+    context = {
+        "agent_de_mois": agent_de_mois,
+        "agents": agents,
+        "feedbacks": feedbacks,
+        "feedback_form": feedback_form,
     }
     return render(request, 'pages/about.html',context)
 
@@ -111,7 +143,8 @@ def register(request):
             messages.success(request, "account created successfully!")
             return redirect("dashboard")
         else:
-            print("error: ", user_form.errors) # type: ignore
+            print("error: ", user_form.errors)
+            messages.error(request,f"{user_form.errors}")  # type: ignore
             return redirect("register")
 
     context = {

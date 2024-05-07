@@ -1,6 +1,7 @@
  
 {% extends 'base.html' %}
 {% load static  %}
+{% load django_bootstrap5  %}
 {% block title %}
 about
 {% endblock %}
@@ -107,5 +108,62 @@ about
         </div>
       </div>
     </section>
+    <!-- Feedbacks -->
+    <section id="feedbacks" class="py-5">
+      <div class="container">
+        <h2 class="text-center">notre testimonials</h2>
+        {% include "partials/_alerts.html" %}
+        <div class="row text-center">
+          {% for feedback in feedbacks %}
+            <div class="col-md-4">
+            <img
+              src='{{feedback.writer.customerprofile.profile_image.url}}'
+              alt=""
+              class="rounded-circle mb-3"
+            />
+            <h4>{{feedback.writer.username}}</h4>
+            <p class="text-success">
+              <i class="fas fa-award text-success mb-3"></i> Utilisateur
+            </p>
+            <hr />
+            <p class="lead">
+              {{feedback.feedback}}
+            </p>
+            <p><i class="fas fa-envelope-open"></i> {{feedback.writer.email}}</p>
+          </div>
 
+          {% empty %}
+            no feedback
+          {% endfor %}       
+        </div>
+      </div>
+    </section>
+    <section class="container py-3 px-4">
+      {% if user.is_authenticated %}
+        <form action="{% url "about" %}" method="post">
+            {% csrf_token %}
+            {% bootstrap_form feedback_form %}
+
+            <div class="row">
+                <div class="col">{% bootstrap_button button_type="reset" content="clear" %}</div>
+                <div class="col">{% bootstrap_button button_type="submit" content="submit" %}</div>
+            </div>
+        </form>
+
+        <script>
+            document.querySelectorAll("button.btn").forEach(function (btn) {
+                btn.classList.add("w-100");
+                if (btn.type=="reset") {
+                    btn.classList.remove("btn-primary")
+                    btn.classList.add("btn-danger")
+                }
+            })
+            document.querySelectorAll("select").forEach(function (select) {
+                select.classList.add("d-block");
+                select.classList.add("form-control");
+
+            })
+        </script>  
+      {% endif %}
+    </section>
 {% endblock %}
